@@ -37,3 +37,4 @@ void math_execute(cpu *cpu, instruction *instruction)
     break;
   }
 }
+

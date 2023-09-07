@@ -1,4 +1,4 @@
-#include "types.h"
+#include "../lib/types.h"
 #include "registers.h"
 #include "memory.h"
 #include "../lib/bits.h"
@@ -22,3 +22,5 @@ void cpu_write_mem(cpu *cpu, word address, word data);
 word cpu_read_mem(cpu *cpu, word address);
 
 #endif // CPU_H
+
+ifdf
