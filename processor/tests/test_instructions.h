@@ -10,7 +10,7 @@ typedef enum test_type
   STD,
   OVFLW,
   ZERO,
-  NEGATIVE,
+  NEG,
   CARRY,
 } test_type;
 
@@ -138,6 +138,42 @@ REG_OPCODE_EXECUTE_TEST(OVFLW, ADD, 0xFFFFFFFF, 0xFFFFFFF, < 0xFFFFFFFF)
 REG_OPCODE_EXECUTE_TEST(OVFLW, MUL, 0xFFFFFFFF, 4, < 0xFFFFFFFF)
 REG_OPCODE_EXECUTE_TEST(OVFLW, SLL, 0xFFFFFFFF, 0xFF, == 0xFFFFFF00)
 
+// REG_OPCODE_EXECUTE_TEST(NEG, ADD, (-21), (-21), (signed int)< 0)
+
+static void test_instructions_exec_ADDNEG(void)
+{
+  printf("test_instruction_exec_%s_%s\n", "ADD", "NEG");
+  cpu *cpu = malloc(sizeof(cpu));
+  cpu_init(cpu);
+  cpu_write_reg(cpu, 2, (-21));
+  cpu_write_reg(cpu, 3, (-21));
+  instruction test_add = {MATH, ADD, REG, {{1, 2, 3}}};
+  instruction_execute(cpu, &test_add);
+  printf("0x%x\n", cpu_read_reg(cpu, 1));
+  do
+  {
+    minunit_assert++;
+    if (!(cpu_read_reg(cpu, 1) * (-1) > 0))
+    {
+      // (void)__builtin___snprintf_chk(minunit_last_message, 1024, 0, __builtin_object_size(minunit_last_message, 2 > 1 ? 1 : 0), "%s failed:\n\t%s:%d: %s", __func__, "/Users/calebsirak/research/triton/processor/tests/test_instructions.h", 141, __builtin___sprintf_chk("%s %s failed", 0, __builtin_object_size("%s %s failed", 2 > 1 ? 1 : 0), "ADD", "NEG"));
+      minunit_status = 1;
+      return;
+    }
+    else
+    {
+      printf(".");
+    }
+  } while (0);
+}
+
+// INCOMPLETE
+REG_OPCODE_EXECUTE_TEST(NEG, SUB, 0x69, 0x69, == 0)
+REG_OPCODE_EXECUTE_TEST(NEG, MUL, 0x69, 0, == 0)
+REG_OPCODE_EXECUTE_TEST(NEG, DIV, 0x69, 0, == 0)
+REG_OPCODE_EXECUTE_TEST(NEG, MOD, 0x69, 0x69, == 0)
+REG_OPCODE_EXECUTE_TEST(NEG, SRL, 0x69, 2, == 0x69 >> 2)
+REG_OPCODE_EXECUTE_TEST(NEG, SRA, (-69), 2, == (-69) >> 2)
+
 // ADD
 // SUB
 // MUL
@@ -221,5 +257,13 @@ MU_TEST_SUITE(test_instruction_suite)
 
   GET_EXEC_TEST_NAME(OVFLW, ADD);
   GET_EXEC_TEST_NAME(OVFLW, MUL);
+
+  GET_EXEC_TEST_NAME(NEG, ADD);
+  GET_EXEC_TEST_NAME(NEG, SUB);
+  GET_EXEC_TEST_NAME(NEG, MUL);
+  GET_EXEC_TEST_NAME(NEG, DIV);
+  GET_EXEC_TEST_NAME(NEG, MOD);
+  GET_EXEC_TEST_NAME(NEG, SRL);
+  GET_EXEC_TEST_NAME(NEG, SRA);
 }
 #endif // TEST_INSTRUCTION_H
