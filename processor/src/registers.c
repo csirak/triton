@@ -27,7 +27,7 @@ void print_registers(register_file *registers)
 {
   for (int i = 0; i < REGISTERS_COUNT; i++)
   {
-    printf("Register %d: %d\n", i, registers->regs[(int)(i)]);
+    printf("Register %d: 0x%x\n", i, registers->regs[(int)(i)]);
   }
 }
 

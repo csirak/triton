@@ -10,5 +10,6 @@
 #define BYTES2(in_word, idx) ((in_word >> (idx * 16)) & 0xFFFF)
 
 word pushWord(word in_word, word to_push, int offset);
+word popWord(word in_word, int offset);
 
 #endif // BITS_H

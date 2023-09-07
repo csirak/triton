@@ -14,19 +14,6 @@
 |     7 |       fg | Operation flag register |
 |  6-31 |  unnamed | Unnamed                 |
 
-### Operation flag register
-
-| Bit | ABI Name | Name                  |
-| --: | -------: | :-------------------- |
-|   0 |       cf | Carry Flag            |
-|   1 |       zf | Zero flag             |
-|   2 |       sf | Sign Flag             |
-|   3 |       of | Overflow Flag         |
-|   4 |       if | Interupt Enabled Flag |
-|   5 |      iof | Invalid Opcode Flag   |
-|   6 |      maf | Memory Access Flag    |
-|   7 |   unused | Unused                |
-
 ### Conventions:
 
 r(n)\*: Any register (index of n)
@@ -90,6 +77,10 @@ r(n)!: Any register (index of n) that does not include:
 | :---------- | :----- | ------------------------- |
 | push        | r(0)\* | sp--; memory[sp] = r(0)\* |
 | pop         | r(0)!  | r(0)\* = memory[sp]; sp++ |
+
+| Errors           | Flag Register Value |
+| :--------------- | ------------------: |
+| Division By Zero |                0x69 |
 
 ## Instruction Encoding
 

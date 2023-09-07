@@ -33,7 +33,8 @@
     "__tuple": "c",
     "array": "c",
     "variant": "c",
-    "compare": "c"
+    "compare": "c",
+    "math.h": "c"
   },
   "lldb.displayFormat": "auto",
   "lldb.showDisassembly": "auto",

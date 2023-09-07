@@ -1,7 +1,18 @@
 #include "../include/instruction.h"
+#include "../include/math.h"
 #include "../lib/bits.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+word instruction_execute(cpu *cpu, instruction *inst)
+{
+  switch (inst->type)
+  {
+  case MATH:
+    math_execute(cpu, inst);
+    break;
+  }
+}
 
 instruction *instruction_decode(word encoded_instruction)
 {
@@ -73,8 +84,8 @@ void instruction_load_register_params(instruction *inst, word encoded_instructio
 
 void instruction_load_immediate_params(instruction *inst, word encoded_instruction)
 {
-  inst->parameters.imm.r0 = BIT6(encoded_instruction, 0);
-  inst->parameters.imm.imm = BYTES2(encoded_instruction >> 6, 0);
+  inst->parameters.imm.r0 = BIT6(encoded_instruction, 1);
+  inst->parameters.imm.imm = popWord(encoded_instruction, 12);
 }
 
 word instruction_encode_to_word(instruction *inst)

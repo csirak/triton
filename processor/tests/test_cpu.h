@@ -59,7 +59,6 @@ MU_TEST_SUITE(test_cpu_suite)
 {
   printf("test_cpu_suite\n");
   MU_SUITE_CONFIGURE(&test_cpu_setup, &test_cpu_teardown);
-
   MU_RUN_TEST(test_cpu_init);
   MU_RUN_TEST(test_cpu_memory_access);
   MU_RUN_TEST(test_cpu_reg_access);

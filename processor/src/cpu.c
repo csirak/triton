@@ -1,7 +1,7 @@
 #include "../lib/types.h"
 #include "../include/cpu.h"
-#include "../include/instruction.h"
 #include <stdlib.h>
+#include "../include/instruction.h"
 
 void cpu_init(cpu *cpu)
 {
@@ -41,9 +41,9 @@ word cpu_read_mem(cpu *cpu, word address)
 // Execution
 void cpu_step(cpu *cpu)
 {
-  word encoded_instruction = memory_get(cpu->memory, GET_PC(cpu));
+  word encoded_instruction = memory_get(cpu->memory, GET_REG(cpu, PC_REG));
   instruction *inst = instruction_decode(encoded_instruction);
-  // implement instruction_execute
+  instruction_execute(cpu, inst);
 }
 
 void cpu_run(cpu *cpu)
