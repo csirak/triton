@@ -1,22 +1,26 @@
-#include "../include/memory.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-void memory_init(memory *mem)
+#include "../include/memory.h"
+
+memory *memory_create()
 {
-  mem->memory = malloc(sizeof(word) * MEMORY_SIZE);
+  memory *mem = malloc_with_retry(sizeof(memory));
+  mem->memory = calloc(sizeof(word), MEMORY_SIZE);
   mem->size = MEMORY_SIZE;
+  return mem;
 }
 
 void memory_free(memory *mem)
 {
   free(mem->memory);
   mem->size = 0;
+  free(mem);
 }
 
 word memory_get(memory *mem, word address)
 {
-  if (validateAddress(address, mem->size))
+  if (memory_validate_address(address, mem->size))
     return mem->memory[address];
 
   return 0;
@@ -24,15 +28,15 @@ word memory_get(memory *mem, word address)
 
 void memory_set(memory *mem, word address, word data)
 {
-  if (validateAddress(address, mem->size))
+  if (memory_validate_address(address, mem->size))
   {
     mem->memory[address] = data;
   };
 }
 
-int validateAddress(word address, long size)
+int memory_validate_address(word address, long size)
 {
-  if (address >= size)
+  if (address > size)
   {
     return 0;
   }

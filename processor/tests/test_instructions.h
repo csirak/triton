@@ -1,15 +1,17 @@
 #include "minunit.h"
+
 #include "../include/instruction.h"
 
 #ifndef TEST_INSTRUCTION_H
 #define TEST_INSTRUCTION_H
+
 #define GET_DECODE_TEST_NAME(opcode) MU_RUN_TEST(test_instructions_decode_##opcode);
-#define GET_EXEC_TEST_NAME(op_tag, op_code) MU_RUN_TEST(test_instructions_exec_##op_code##op_tag);
+#define GET_EXEC_TEST_NAME(op_tag, op_code) MU_RUN_TEST(test_instruction_exec_##op_code##op_tag);
 typedef enum test_type
 {
   STD,
   OVFLW,
-  ZERO,
+  ZERO
 } test_type;
 
 #define REG_OPCODE_DECODE_TEST(op_type, op_code, r0_value, r1_value, r2_value)                     \
@@ -25,6 +27,7 @@ typedef enum test_type
     mu_assert(decoded_instruction->parameters.reg.r0 == r0_value, "Register param decode failed"); \
     mu_assert(decoded_instruction->parameters.reg.r1 == r1_value, "Register param decode failed"); \
     mu_assert(decoded_instruction->parameters.reg.r2 == r2_value, "Register param decode failed"); \
+    free(decoded_instruction);                                                                     \
   }
 
 #define IMM_OPCODE_DECODE_TEST(op_type, op_code, r0_value, imm_value)                                 \
@@ -41,20 +44,21 @@ typedef enum test_type
     mu_assert(decoded_instruction->type == op_type, "Operation decode failed");                       \
     mu_assert(decoded_instruction->parameters.imm.r0 == r0_value, "Register param decode failed");    \
     mu_assert(decoded_instruction->parameters.imm.imm == imm_value, "Immediate param decode failed"); \
+    free(decoded_instruction);                                                                        \
   }
 
-#define REG_OPCODE_EXECUTE_TEST(op_tag, op_code, r1_value, r2_value, value_com)            \
-                                                                                           \
-  MU_TEST(test_instructions_exec_##op_code##op_tag)                                        \
-  {                                                                                        \
-    printf("test_instruction_exec_%s_%s\n", #op_code, #op_tag);                            \
-    cpu *cpu = malloc(sizeof(cpu));                                                        \
-    cpu_init(cpu);                                                                         \
-    cpu_write_reg(cpu, 2, r1_value);                                                       \
-    cpu_write_reg(cpu, 3, r2_value);                                                       \
-    instruction test_add = {MATH, op_code, REG, {{1, 2, 3}}};                              \
-    instruction_execute(cpu, &test_add);                                                   \
-    mu_assert(cpu_read_reg(cpu, 1) value_com, sprintf("%s %s failed", #op_code, #op_tag)); \
+#define REG_OPCODE_EXECUTE_TEST(op_tag, op_code, r1_value, r2_value, value_com)             \
+                                                                                            \
+  MU_TEST(test_instruction_exec_##op_code##op_tag)                                          \
+  {                                                                                         \
+    printf("test_instruction_exec_%s_%s\n", #op_code, #op_tag);                             \
+    cpu *cpu = cpu_create();                                                                \
+    cpu_write_reg(cpu, 22, r1_value);                                                       \
+    cpu_write_reg(cpu, 23, r2_value);                                                       \
+    instruction test_instruction = {MATH, op_code, REG, {{21, 22, 23}}};                    \
+    instruction_execute(cpu, &test_instruction);                                            \
+    mu_assert(cpu_read_reg(cpu, 21) value_com, sprintf("%s %s failed", #op_code, #op_tag)); \
+    cpu_free(cpu);                                                                          \
   }
 
 void test_instruction_setup(void)
@@ -65,6 +69,7 @@ void test_instruction_teardown(void)
 {
   /* Nothing */
 }
+// Decoding Instructions
 
 // MATH
 REG_OPCODE_DECODE_TEST(MATH, ADD, 1, 2, 3)
@@ -98,10 +103,9 @@ REG_OPCODE_DECODE_TEST(SYSACC, SYSCALL, 1, 2, 3)
 IMM_OPCODE_DECODE_TEST(SYSACC, SETU, 1, 213)
 IMM_OPCODE_DECODE_TEST(SYSACC, SETL, 1, 213)
 
-// STACK
-REG_OPCODE_DECODE_TEST(STACK, PUSH, 1, 2, 3)
-REG_OPCODE_DECODE_TEST(STACK, POP, 1, 2, 3)
+// Executing Instructions
 
+// MATH
 REG_OPCODE_EXECUTE_TEST(STD, ADD, 0x21, 0x48, == 0x69)
 REG_OPCODE_EXECUTE_TEST(STD, SUB, 0x69, 0x48, == 0x21)
 REG_OPCODE_EXECUTE_TEST(STD, MUL, 0x69, 0x48, == 0x69 * 0x48)
@@ -120,8 +124,8 @@ REG_OPCODE_EXECUTE_TEST(STD, SLTU, 21, 48, == 1)
 REG_OPCODE_EXECUTE_TEST(ZERO, ADD, 21, (-21), == 0)
 REG_OPCODE_EXECUTE_TEST(ZERO, SUB, 0x69, 0x69, == 0)
 REG_OPCODE_EXECUTE_TEST(ZERO, MUL, 0x69, 0, == 0)
-REG_OPCODE_EXECUTE_TEST(ZERO, DIV, 0x69, 0, == 0)
-REG_OPCODE_EXECUTE_TEST(ZERO, MOD, 0x69, 0x69, == 0)
+REG_OPCODE_EXECUTE_TEST(ZERO, DIV, 0x69, 0, == 0 && (cpu_read_reg(cpu, FG_REG) == 0x69))
+REG_OPCODE_EXECUTE_TEST(ZERO, MOD, 0x69, 0, == 0 && (cpu_read_reg(cpu, FG_REG) == 0x69))
 REG_OPCODE_EXECUTE_TEST(ZERO, SLL, 0, 2, == 0)
 REG_OPCODE_EXECUTE_TEST(ZERO, SRL, 100, 10, == 0)
 REG_OPCODE_EXECUTE_TEST(ZERO, SRA, (0b111), 3, == 0)
@@ -135,22 +139,68 @@ REG_OPCODE_EXECUTE_TEST(ZERO, SLTU, 21, 0, == 0)
 REG_OPCODE_EXECUTE_TEST(OVFLW, ADD, 0xFFFFFFFF, 0xFFFFFFF, < 0xFFFFFFFF)
 REG_OPCODE_EXECUTE_TEST(OVFLW, MUL, 0xFFFFFFFF, 4, < 0xFFFFFFFF)
 REG_OPCODE_EXECUTE_TEST(OVFLW, SLL, 0xFFFFFFFF, 0xFF, == 0xFFFFFF00)
+REG_OPCODE_EXECUTE_TEST(OVFLW, MOD, 0x69, 0x69, == 0)
 
-// ADD
-// SUB
-// MUL
-// DIV
-// MOD
-// SLL
-// SRL
-// SRA
-// AND
-// OR
-// XOR
-// NOT
-// SLT
-// SLTU
-// EQ
+// CFLOW
+MU_TEST(test_instruction_exec_JUMP)
+{
+  printf("test_instruction_exec_JUMP\n");
+  cpu *cpu = cpu_create();
+  cpu_write_reg(cpu, 1, 0x48);
+  instruction test_instruction = {CFLOW, JUMP, REG, {{1, 2, 3}}};
+  instruction_execute(cpu, &test_instruction);
+  mu_assert(cpu_read_reg(cpu, PC_REG) == 0x48, "PC_REG should be 0x48");
+}
+
+MU_TEST(test_instruction_exec_JEQ)
+{
+  printf("test_instruction_exec_JEQ\n");
+  cpu *cpu = cpu_create();
+  cpu_write_reg(cpu, 20, 0x48);
+  cpu_write_reg(cpu, 21, 0x48);
+  cpu_write_reg(cpu, 22, 0x48);
+  instruction test_instruction = {CFLOW, JEQ, REG, {{20, 21, 22}}};
+  instruction_execute(cpu, &test_instruction);
+  mu_assert(cpu_read_reg(cpu, PC_REG) == 0x48, "PC_REG should be 0x48");
+}
+
+// SYSACC
+MU_TEST(test_instruction_exec_LOAD)
+{
+  printf("test_instruction_exec_LOAD\n");
+  cpu *cpu = cpu_create();
+
+  word address = 0x48;
+  word value = 0x69;
+  cpu_write_mem(cpu, address, value);
+  cpu_write_reg(cpu, 21, address);
+  instruction test_instruction = {SYSACC, LOAD, REG, {{20, 21, 22}}};
+  instruction_execute(cpu, &test_instruction);
+  mu_assert(cpu_read_reg(cpu, 20) == value, "Reg valye should be 0x48");
+}
+
+MU_TEST(test_instruction_exec_STR)
+{
+  printf("test_instruction_exec_STR\n");
+  cpu *cpu = cpu_create();
+  word address = 0x48;
+  word value = 0x69;
+  cpu_write_reg(cpu, 20, address);
+  cpu_write_reg(cpu, 21, value);
+  instruction test_instruction = {SYSACC, STR, REG, {{20, 21, 22}}};
+  instruction_execute(cpu, &test_instruction);
+  mu_assert(cpu_read_mem(cpu, address) == value, "Data at address should be should be 0x69");
+}
+
+MU_TEST(test_instruction_exec_SETU)
+{
+  printf("test_instruction_exec_SETU\n");
+  cpu *cpu = cpu_create();
+  word imm_value = 0x4000;
+  instruction test_instruction = {SYSACC, SETU, REG, {imm : {20, imm_value}}};
+  instruction_execute(cpu, &test_instruction);
+  mu_assert(cpu_read_reg(cpu, 20) == imm_value << 16, "Data at address should be should be 0x69");
+}
 
 MU_TEST_SUITE(test_instruction_suite)
 {
@@ -180,8 +230,6 @@ MU_TEST_SUITE(test_instruction_suite)
   GET_DECODE_TEST_NAME(SETR);
   GET_DECODE_TEST_NAME(IRQ);
   GET_DECODE_TEST_NAME(SYSCALL);
-  GET_DECODE_TEST_NAME(PUSH);
-  GET_DECODE_TEST_NAME(POP);
 
   // IMMEDIATE INSTRUCTIONS
   GET_DECODE_TEST_NAME(SETU);
@@ -217,7 +265,15 @@ MU_TEST_SUITE(test_instruction_suite)
   GET_EXEC_TEST_NAME(ZERO, SLT);
   GET_EXEC_TEST_NAME(ZERO, SLTU);
 
+  // EXECUTE MATH OVFLW EXPECTED
   GET_EXEC_TEST_NAME(OVFLW, ADD);
   GET_EXEC_TEST_NAME(OVFLW, MUL);
+
+  MU_RUN_TEST(test_instruction_exec_JUMP);
+  MU_RUN_TEST(test_instruction_exec_JEQ);
+
+  MU_RUN_TEST(test_instruction_exec_LOAD);
+  MU_RUN_TEST(test_instruction_exec_STR);
+  MU_RUN_TEST(test_instruction_exec_SETU);
 }
 #endif // TEST_INSTRUCTION_H

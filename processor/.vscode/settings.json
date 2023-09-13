@@ -1,0 +1,29 @@
+{
+  "files.associations": {
+    "*.h": "c",
+    "types.h": "c",
+    "cpu.h": "c",
+    "instruction.h": "c",
+    "math.h": "c",
+    "cflow.h": "c",
+    "__bit_reference": "c",
+    "__node_handle": "c",
+    "atomic": "c",
+    "bitset": "c",
+    "__memory": "c",
+    "limits": "c",
+    "locale": "c",
+    "optional": "c",
+    "ratio": "c",
+    "system_error": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "vector": "c",
+    "chrono": "c",
+    "cstddef": "c",
+    "deque": "c",
+    "filesystem": "c",
+    "random": "c",
+    "ios": "c"
+  }
+}

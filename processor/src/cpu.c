@@ -1,19 +1,27 @@
+#include <stdlib.h>
+
 #include "../lib/types.h"
 #include "../include/cpu.h"
-#include <stdlib.h>
-#include "../include/instruction.h"
 
-void cpu_init(cpu *cpu)
+#include "../include/instruction.h"
+#include "../include/screen.h"
+
+cpu *cpu_create()
 {
-  cpu->registers = malloc(sizeof(register_file));
-  cpu->memory = malloc(sizeof(memory));
-  registers_init(cpu->registers);
-  memory_init(cpu->memory);
+  cpu *cpu = malloc_with_retry(sizeof(cpu));
+  cpu->registers = registers_create();
+  cpu->memory = memory_create();
+  cpu->screen = screen_create(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+  return cpu;
 }
+
 void cpu_free(cpu *cpu)
 {
-  free(cpu->registers);
-  free(cpu->memory);
+  registers_free(cpu->registers);
+  memory_free(cpu->memory);
+  screen_free(cpu->screen);
+  free(cpu);
 }
 
 // Register Accessors
@@ -39,16 +47,33 @@ word cpu_read_mem(cpu *cpu, word address)
 }
 
 // Execution
+
+void cpu_start(cpu *cpu)
+{
+  cpu_write_reg(cpu, SP_REG, 0x00000FFF);
+  cpu_write_reg(cpu, PC_REG, 0x00001000);
+}
+
+void cpu_vram_to_screen(cpu *cpu)
+{
+  screen_write_buffer(cpu->screen, &cpu->memory->memory[VIDEO_MEMORY_START], SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
 void cpu_step(cpu *cpu)
 {
-  word encoded_instruction = memory_get(cpu->memory, GET_REG(cpu, PC_REG));
+  word pc_value = cpu_read_reg(cpu, PC_REG);
+  word encoded_instruction = cpu_read_mem(cpu, pc_value);
+  cpu_write_reg(cpu, PC_REG, pc_value + 1);
   instruction *inst = instruction_decode(encoded_instruction);
   instruction_execute(cpu, inst);
+  free(inst);
 }
 
 void cpu_run(cpu *cpu)
 {
-  while (1)
+  cpu_start(cpu);
+  int running = 1;
+  while (running)
   {
     cpu_step(cpu);
   }

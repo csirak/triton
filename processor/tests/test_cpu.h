@@ -1,4 +1,5 @@
 #include "minunit.h"
+
 #include "../include/cpu.h"
 
 #ifndef TEST_CPU_H
@@ -10,22 +11,13 @@ void test_cpu_setup(void)
 
 void test_cpu_teardown(void)
 {
-  /* Nothing */
 }
 
 MU_TEST(test_cpu_init)
 {
   printf("test_cpu_init\n");
-  cpu core;
-  cpu_init(&core);
-}
-
-MU_TEST(test_cpu_free)
-{
-  printf("test_cpu_free\n");
-  cpu core;
-  cpu_init(&core);
-  cpu_free(&core);
+  cpu *core = cpu_create();
+  cpu_free(core);
 }
 
 MU_TEST(test_cpu_memory_access)
@@ -34,8 +26,7 @@ MU_TEST(test_cpu_memory_access)
 
   word address = 0x33d;
   word value = 12423;
-  cpu *core = malloc(sizeof(core));
-  cpu_init(core);
+  cpu *core = cpu_create();
   cpu_write_mem(core, address, value);
   mu_assert(value == cpu_read_mem(core, address), "Memory read/write failed");
   cpu_free(core);
@@ -44,8 +35,7 @@ MU_TEST(test_cpu_memory_access)
 MU_TEST(test_cpu_reg_access)
 {
   printf("test_cpu_reg_access\n");
-  cpu *core = malloc(sizeof(core));
-  cpu_init(core);
+  cpu *core = cpu_create();
   word value = 1231423;
   for (u8 i = 1; i < REGISTERS_COUNT; i++)
   {

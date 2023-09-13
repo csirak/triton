@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/homebrew/lib/**",
+                "/opt/homebrew/Cellar/sdl2/2.28.3/include/SDL2",
+                "/opt/homebrew/Cellar/csfml/2.5.2_1/include/SFML",
+                "/opt/homebrew/Cellar/csfml/2.5.2_1/include"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-arm64"
+        }
+    ],
+    "version": 4
+}

@@ -1,6 +1,7 @@
 # Variables
 CC = gcc
-CFLAGS = -Ilib -Wall -g
+CFLAGS = -Ilib -I/opt/homebrew/include -I/opt/homebrew/include/CSFML -Wall -Wextra -g
+LDFLAGS = -L/opt/homebrew/lib -lcsfml-graphics -lcsfml-window -lcsfml-system
 SRCDIR = src
 TESTDIR = tests
 LIBDIR = lib
@@ -29,11 +30,11 @@ $(OBJDIR)/%.o: %.c
 # Rule to create the executable
 $(TARGET): $(OBJECTS) $(LIB_OBJECTS)
 	@mkdir -p $(BINDIR)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(TEST_TARGET): $(TEST_OBJECTS) $(filter-out $(OBJDIR)/main.o, $(OBJECTS)) $(LIB_OBJECTS)
 	@mkdir -p $(BINDIR)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Target to compile and run tests
 test: $(TEST_TARGET)

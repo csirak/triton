@@ -1,22 +1,32 @@
-#include "../include/instruction.h"
-#include "../include/math.h"
-#include "../lib/bits.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-word instruction_execute(cpu *cpu, instruction *inst)
+#include "../lib/bits.h"
+
+#include "../include/execute.h"
+#include "../include/instruction.h"
+
+void instruction_execute(cpu *cpu, instruction *inst)
 {
   switch (inst->type)
   {
   case MATH:
     math_execute(cpu, inst);
     break;
+
+  case CFLOW:
+    cflow_execute(cpu, inst);
+    break;
+
+  case SYSACC:
+    sysacc_execute(cpu, inst);
+    break;
   }
 }
 
 instruction *instruction_decode(word encoded_instruction)
 {
-  instruction *inst = malloc(sizeof(instruction));
+  instruction *inst = malloc_with_retry(sizeof(instruction));
   inst->opcode = BIT6(encoded_instruction, 0);
   if (inst->opcode <= MATH_END)
   {
@@ -29,10 +39,6 @@ instruction *instruction_decode(word encoded_instruction)
   else if (inst->opcode <= SYSACC_END)
   {
     instruction_decode_sysacc(inst, encoded_instruction);
-  }
-  else if (inst->opcode <= STACK_END)
-  {
-    instruction_decode_stack(inst, encoded_instruction);
   }
   else
   {
@@ -64,13 +70,6 @@ void instruction_decode_sysacc(instruction *inst, word encoded_instruction)
     instruction_load_immediate_params(inst, encoded_instruction);
     return;
   }
-  inst->param_type = REG;
-  instruction_load_register_params(inst, encoded_instruction);
-}
-
-void instruction_decode_stack(instruction *inst, word encoded_instruction)
-{
-  inst->type = STACK;
   inst->param_type = REG;
   instruction_load_register_params(inst, encoded_instruction);
 }
@@ -147,17 +146,12 @@ const char *instruction_keywords[] = {
     "SETR",
     "IRQ",
     "SYSCALL",
-    "SYSACC_END",
-    "PUSH",
-    "POP",
-    "STACK_END",
-};
+    "SYSACC_END"};
 
 const char *op_type_keywords[] = {
     "MATH",
     "CFLOW",
     "SYSACC",
-    "STACK",
     "UNKNOWN"};
 
 const char *param_type_keywords[] = {

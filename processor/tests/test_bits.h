@@ -1,4 +1,5 @@
 #include "minunit.h"
+
 #include "../lib/bits.h"
 #include "../lib/types.h"
 
@@ -11,7 +12,6 @@ void test_bits_setup(void)
 
 void test_bits_teardown(void)
 {
-  /* Nothing */
 }
 
 MU_TEST(test_bits6)

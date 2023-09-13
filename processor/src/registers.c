@@ -1,21 +1,25 @@
-#include "../include/registers.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-void registers_init(register_file *registers)
+#include "../include/registers.h"
+
+register_file *registers_create()
 {
-  registers->regs = malloc(sizeof(word) * REGISTERS_COUNT);
+  register_file *registers = malloc_with_retry(sizeof(register_file));
+  registers->regs = malloc_with_retry(sizeof(word) * REGISTERS_COUNT);
   registers->size = REGISTERS_COUNT;
   for (int i = 0; i < REGISTERS_COUNT; i++)
   {
     registers_set(registers, i, 0);
   }
+  return registers;
 }
 
-void register_free(register_file *registers)
+void registers_free(register_file *registers)
 {
   free(registers->regs);
   registers->size = 0;
+  free(registers);
 }
 
 word registers_get(register_file *registers, u8 idx)

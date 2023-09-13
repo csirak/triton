@@ -1,13 +1,11 @@
-#include "../include/math.h"
 #include "../include/cpu.h"
+#include "../include/execute.h"
 
 void math_execute(cpu *cpu, instruction *instruction)
 {
   switch (instruction->opcode)
   {
-    MATH_OPERATION_CASE(ADD, r1 + r2)
-    MATH_OPERATION_CASE(SUB, r1 - r2)
-    MATH_OPERATION_CASE(MUL, r1 * r2)
+
   case DIV:
   {
 
@@ -22,7 +20,23 @@ void math_execute(cpu *cpu, instruction *instruction)
     cpu_write_reg(cpu, instruction->parameters.reg.r0, (r1 / r2));
     break;
   }
-    MATH_OPERATION_CASE(MOD, r1 % r2)
+  case MOD:
+  {
+
+    word r1 = cpu_read_reg(cpu, instruction->parameters.reg.r1);
+    word r2 = cpu_read_reg(cpu, instruction->parameters.reg.r2);
+    if (r1 == 0 || r2 == 0)
+    {
+      cpu_write_reg(cpu, instruction->parameters.reg.r0, 0);
+      cpu_write_reg(cpu, FG_REG, 0x69);
+      break;
+    }
+    cpu_write_reg(cpu, instruction->parameters.reg.r0, (r1 % r2));
+    break;
+  }
+    MATH_OPERATION_CASE(ADD, r1 + r2)
+    MATH_OPERATION_CASE(SUB, r1 - r2)
+    MATH_OPERATION_CASE(MUL, r1 * r2)
     MATH_OPERATION_CASE(SLL, r1 << r2)
     MATH_OPERATION_CASE(SRL, ((unsigned int)r1) >> r2)
     MATH_OPERATION_CASE(SRA, (signed int)((signed int)r1) >> r2)
@@ -37,4 +51,3 @@ void math_execute(cpu *cpu, instruction *instruction)
     break;
   }
 }
-

@@ -1,5 +1,15 @@
 # Triton VM ISA
 
+## Memory Layout
+
+| Section      |           Address Range |
+| :----------- | ----------------------: |
+| Stack        | 0x00000000 - 0x00000FFF |
+| Boot Sector  | 0x00001000 - 0x000011FF |
+| Free Memory  | 0x00001200 - 0x0000FFFF |
+| Video Memory | 0x00010000 - 0x0005AFFF |
+| Free Memory  | 0x0005B000 - 0xFFFFFFFF |
+
 ## Registers
 
 | Index | ABI Name | Name                    |
@@ -12,7 +22,7 @@
 |     5 |       pc | Program counter         |
 |     6 |       fp | Frame pointer           |
 |     7 |       fg | Operation flag register |
-|  6-31 |  unnamed | Unnamed                 |
+|  8-31 |  unnamed | Unnamed                 |
 
 ### Conventions:
 
@@ -50,14 +60,14 @@ r(n)!: Any register (index of n) that does not include:
 | sltu        | r(0)!, r\*, r\* | r(0)! = r(1)\* < r(2)\*  |
 | eq          | r(0)!, r\*, r\* | r(0)! = r(1)\* == r(2)\* |
 
-[comment]: # "sra is a macro most likely"
-
 ### Control Flow
 
 | Instruction | Inputs                 | Description                          |
 | :---------- | :--------------------- | ------------------------------------ |
 | jump        | r(0)\*                 | pc = r(0)\*                          |
-| jeq         | r(0)\*, r(1)\*, r(2)\* | if r(0)\* == r(1)\* then jump r(2)\* |
+| jeq         | r(0)\*, r(1)\*, r(2)\* | if r(1)\* == r(2)\* then jump r(0)\* |
+
+[comment]: # "jeqz is a macro"
 
 ### Memory/Register Access
 
@@ -71,6 +81,14 @@ r(n)!: Any register (index of n) that does not include:
 | irq         | r(0)\*         | interrupt request with code (r(0)\*) |
 | syscall     | r(0)\*         | syscall with code (r(0)\*)           |
 
+## Macros
+
+### Control Flow
+
+| Instruction | Inputs         | Description                       |
+| :---------- | :------------- | --------------------------------- |
+| jeqz        | r(0)\*, r(1)\* | if r(1)\* == 0\* then jump r(0)\* |
+
 ### Stack Access
 
 | Instruction | Inputs | Description               |
@@ -80,6 +98,7 @@ r(n)!: Any register (index of n) that does not include:
 
 | Errors           | Flag Register Value |
 | :--------------- | ------------------: |
+| Unknown Opcode   |                0x09 |
 | Division By Zero |                0x69 |
 
 ## Instruction Encoding

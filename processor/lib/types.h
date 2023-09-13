@@ -1,7 +1,15 @@
+#include "SFML/Graphics.h"
+
 #ifndef TYPES_H
 #define TYPES_H
-#define MEMORY_SIZE 1024
+#define MEMORY_SIZE 0xFFFFFF
 #define REGISTERS_COUNT (32)
+
+#define TESTMODE 0
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define VIDEO_MEMORY_START 0x00010000
 
 typedef unsigned char byte;
 typedef unsigned int word;
@@ -19,11 +27,19 @@ typedef struct memory
   long size;
 } memory;
 
+typedef struct Screen
+{
+  sfRenderWindow *window;
+  sfImage *image;
+  sfTexture *texture;
+  sfSprite *sprite;
+} Screen;
+
 typedef struct cpu
 {
   register_file *registers;
   memory *memory;
-
+  Screen *screen;
 } cpu;
 
 typedef enum named_registers
@@ -49,7 +65,6 @@ typedef enum op_type
   MATH,
   CFLOW,
   SYSACC,
-  STACK,
   UNKNOWN
 } op_type;
 
@@ -81,10 +96,7 @@ typedef enum Instructions
   SETR,
   IRQ,
   SYSCALL,
-  SYSACC_END,
-  PUSH,
-  POP,
-  STACK_END,
+  SYSACC_END
 } Instructions;
 
 typedef struct register_parameters
@@ -112,4 +124,5 @@ typedef struct instruction
   } parameters;
 
 } instruction;
+
 #endif // TYPES_H
