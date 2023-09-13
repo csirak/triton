@@ -23,7 +23,7 @@ word cpu_read_mem(cpu *cpu, word address);
 void cpu_vram_to_screen(cpu *cpu);
 
 void cpu_start(cpu *cpu);
-void cpu_step(cpu *cpu);
+bool cpu_step(cpu *cpu);
 void cpu_run(cpu *cpu);
 
 #endif // CPU_H

@@ -15,6 +15,12 @@ typedef unsigned char byte;
 typedef unsigned int word;
 typedef byte u8;
 
+typedef enum
+{
+  false = 0,
+  true = 1
+} bool;
+
 typedef struct register_file
 {
   word *regs;

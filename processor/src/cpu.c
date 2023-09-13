@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "../lib/types.h"
 #include "../include/cpu.h"
@@ -59,7 +60,7 @@ void cpu_vram_to_screen(cpu *cpu)
   screen_write_buffer(cpu->screen, &cpu->memory->memory[VIDEO_MEMORY_START], SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void cpu_step(cpu *cpu)
+bool cpu_step(cpu *cpu)
 {
   word pc_value = cpu_read_reg(cpu, PC_REG);
   word encoded_instruction = cpu_read_mem(cpu, pc_value);
@@ -67,14 +68,29 @@ void cpu_step(cpu *cpu)
   instruction *inst = instruction_decode(encoded_instruction);
   instruction_execute(cpu, inst);
   free(inst);
+  return false;
 }
 
 void cpu_run(cpu *cpu)
 {
-  cpu_start(cpu);
-  int running = 1;
+
+  bool running = true;
+  bool changed = true;
+  sfEvent event;
   while (running)
   {
-    cpu_step(cpu);
+    while (sfRenderWindow_pollEvent(cpu->screen->window, &event))
+    {
+      if (event.type == sfEvtClosed)
+      {
+        running = false;
+      }
+      if (changed)
+      {
+        screen_display(cpu->screen);
+        changed = false;
+      }
+      changed = cpu_step(cpu);
+    }
   }
 }

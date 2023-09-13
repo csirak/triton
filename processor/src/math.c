@@ -1,7 +1,7 @@
 #include "../include/cpu.h"
 #include "../include/execute.h"
 
-void math_execute(cpu *cpu, instruction *instruction)
+bool math_execute(cpu *cpu, instruction *instruction)
 {
   switch (instruction->opcode)
   {
@@ -50,4 +50,5 @@ void math_execute(cpu *cpu, instruction *instruction)
   default:
     break;
   }
+  return false;
 }

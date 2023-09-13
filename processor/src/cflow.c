@@ -3,7 +3,7 @@
 #include "../include/cpu.h"
 #include "../include/execute.h"
 
-void cflow_execute(cpu *cpu, instruction *instruction)
+bool cflow_execute(cpu *cpu, instruction *instruction)
 {
   switch (instruction->opcode)
   {
@@ -27,4 +27,5 @@ void cflow_execute(cpu *cpu, instruction *instruction)
   default:
     break;
   }
+  return false;
 }

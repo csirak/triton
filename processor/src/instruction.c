@@ -6,22 +6,20 @@
 #include "../include/execute.h"
 #include "../include/instruction.h"
 
-void instruction_execute(cpu *cpu, instruction *inst)
+bool instruction_execute(cpu *cpu, instruction *inst)
 {
   switch (inst->type)
   {
   case MATH:
-    math_execute(cpu, inst);
-    break;
+    return math_execute(cpu, inst);
 
   case CFLOW:
-    cflow_execute(cpu, inst);
-    break;
+    return cflow_execute(cpu, inst);
 
   case SYSACC:
-    sysacc_execute(cpu, inst);
-    break;
+    return sysacc_execute(cpu, inst);
   }
+  return false;
 }
 
 instruction *instruction_decode(word encoded_instruction)

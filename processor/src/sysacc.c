@@ -4,7 +4,7 @@
 #include "../include/cpu.h"
 #include "../include/execute.h"
 
-void sysacc_execute(cpu *cpu, instruction *instruction)
+bool sysacc_execute(cpu *cpu, instruction *instruction)
 {
   switch (instruction->opcode)
   {
@@ -45,7 +45,7 @@ void sysacc_execute(cpu *cpu, instruction *instruction)
 
   case IRQ:
   {
-    // undef  for now
+    return true;
   }
 
   case SYSCALL:
@@ -56,4 +56,6 @@ void sysacc_execute(cpu *cpu, instruction *instruction)
   default:
     break;
   }
+
+  return false;
 }

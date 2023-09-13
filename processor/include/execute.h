@@ -16,8 +16,8 @@
   }
 
 // External functions
-void math_execute(cpu *cpu, instruction *instruction);
-void cflow_execute(cpu *cpu, instruction *instruction);
-void sysacc_execute(cpu *cpu, instruction *instruction);
+bool math_execute(cpu *cpu, instruction *instruction);
+bool cflow_execute(cpu *cpu, instruction *instruction);
+bool sysacc_execute(cpu *cpu, instruction *instruction);
 
 #endif // CLFOW_H
