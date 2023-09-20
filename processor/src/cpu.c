@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h> // for sleep()
 
 #include "lib/instruction.h"
 
@@ -80,34 +81,44 @@ void cpu_vram_to_screen(cpu *cpu)
 bool cpu_step(cpu *cpu)
 {
   word pc_value = cpu_read_reg(cpu, PC_REG);
-  word encoded_instruction = cpu_read_mem(cpu, pc_value);
   cpu_write_reg(cpu, PC_REG, pc_value + 1);
+  word encoded_instruction = cpu_read_mem(cpu, pc_value);
   instruction *inst = instruction_decode(encoded_instruction);
-  instruction_log(inst);
   instruction_execute(cpu, inst);
+  bool out = inst->opcode == ADD && inst->parameters.reg.r0 == 0;
   free(inst);
-  return false;
+  return out;
 }
 
 void cpu_run(cpu *cpu)
 {
-
-  bool running = true;
-  bool changed = true;
+  bool started = false;
+  bool changed = false;
   sfEvent event;
-  while (running)
+  while (true)
   {
-    while (sfRenderWindow_pollEvent(cpu->screen->window, &event))
+    if (sfRenderWindow_pollEvent(cpu->screen->window, &event))
     {
       if (event.type == sfEvtClosed)
       {
-        running = false;
+        break;
       }
-      if (changed)
-      {
-        screen_display(cpu->screen);
-        changed = false;
-      }
+    }
+
+    if (changed)
+    {
+      cpu_vram_to_screen(cpu);
+      screen_display(cpu->screen);
+      changed = false;
+    }
+    if (!started)
+    {
+      cpu_vram_to_screen(cpu);
+      screen_display(cpu->screen);
+      started = true;
+    }
+    else
+    {
       changed = cpu_step(cpu);
     }
   }

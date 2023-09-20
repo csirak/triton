@@ -36,7 +36,8 @@ parser_context *parser_parse(ptr_array *tokens)
       break;
     }
     default:
-      printf("FAIL: %d", current_token->type);
+      printf("FAIL: %d\n", current_token->type);
+      printf("FAIL: %d\n", current_token->value);
       // throw error
       return labels;
       break;
@@ -170,9 +171,9 @@ void parser_parse_sysacc(parser_context *ctx)
     inst.param_type = IMM;
     token *storage_register = parser_get_next(ctx);
     token *imm_value = parser_get_next(ctx);
-
     inst.parameters.imm.r0 = storage_register->value;
     inst.parameters.imm.imm = imm_value->value;
+    instruction_log(&inst);
   }
   else
   {
@@ -182,7 +183,6 @@ void parser_parse_sysacc(parser_context *ctx)
     inst.parameters.reg.r0 = storage_register->value;
     inst.parameters.reg.r1 = data_register->value;
   }
-
   word encoded_instruction = instruction_encode_to_word(&inst);
   ptr_array_push(ctx->current_label, (void *)encoded_instruction);
   ++ctx->current_index;

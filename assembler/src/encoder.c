@@ -5,11 +5,11 @@
 
 int get_label_index(parser_context *ctx, int label_value)
 {
-  for (int i = 1; i < (ctx->labels->size); i += 2)
+  for (int i = 1; i < (ctx->labels->size); i++)
   {
     if (ptr_array_get(ctx->labels, i) == label_value)
     {
-      return i / 2;
+      return i;
     }
   }
   return -1;
@@ -18,7 +18,7 @@ int get_label_index(parser_context *ctx, int label_value)
 int get_label_offset(parser_context *ctx, int label_index)
 {
   int offset = 0;
-  for (int i = 0; i < label_index; i += 2)
+  for (int i = 0; i < label_index - 1; i += 2)
   {
     ptr_array *current_label = ptr_array_get(ctx->labels, i);
     offset += current_label->size;
@@ -42,12 +42,15 @@ void encoder_clean_context(parser_context *ctx)
   for (int i = 0; i < (ctx->labels->size); i += 2)
   {
     ptr_array *current_label = ptr_array_get(ctx->labels, i);
+
     for (int j = 0; j < current_label->size; j++)
     {
       word encoded_instruction = ptr_array_get(current_label, j);
       instruction *decoded_instruction = instruction_decode(encoded_instruction);
+
       if (decoded_instruction->opcode == JEQ || decoded_instruction->opcode == JUMP)
       {
+
         int label_value = ptr_array_get(current_label, j + 1);
         int label_index = get_label_index(ctx, label_value);
         int label_offset = get_label_offset(ctx, label_index);
@@ -122,7 +125,6 @@ void encoder_encode_to_txt_file(parser_context *intermediate_representation, cha
     for (int j = 0; j < current_label->size; j++)
     {
       word line = ptr_array_get(current_label, j);
-
       // Write the integer as a 32-bit hex value
       fprintf(file, "0x%08x\n", line);
     }

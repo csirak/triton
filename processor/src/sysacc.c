@@ -25,7 +25,7 @@ bool sysacc_execute(cpu *cpu, instruction *instruction)
   case SETU:
   {
     word register_value = cpu_read_reg(cpu, instruction->parameters.reg.r0);
-    register_value |= (instruction->parameters.imm.imm << 16 & 0xFFFF0000);
+    register_value |= ((instruction->parameters.imm.imm << 16) & 0xFFFF0000);
     cpu_write_reg(cpu, instruction->parameters.imm.r0, register_value);
     break;
   }

@@ -1,9 +1,26 @@
 _start: 
-  jump main
+  setr pfg z
+  setr r19 z
+  setr r20 z
+  setl r19 0x0080  
+  setl r20 0x00E0  
+  mul r22 r19 r20
 
-main: 
-  setr r22 z
-  setr r21 z
   setr r23 z
-  setl r23 0x1111
-  add r22 r21 r23
+  setl r23 1
+  setr r24 z
+  setu r24 1 
+  setu r25 0xFF00
+  setl r25 0xFFFF
+loop:
+  sub r22 r22 r23
+  str r24 r25
+  add r24 r24 r23
+  jeq exit r22 z
+  jump loop
+
+exit:
+  setr fg z
+  setl fg 0xcc69
+  setr fg z
+  mul r11 r11 r11

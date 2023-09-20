@@ -41,20 +41,20 @@ instruction *instruction_decode(word encoded_instruction)
 
 Instructions instruction_decode_opcode(word encoded_instruction)
 {
-  return BIT6(encoded_instruction, 0);
+  return BYTE(encoded_instruction, 0);
 }
 
 void instruction_load_register_params(instruction *inst, word encoded_instruction)
 {
-  inst->parameters.reg.r0 = BIT6(encoded_instruction, 1);
-  inst->parameters.reg.r1 = BIT6(encoded_instruction, 2);
-  inst->parameters.reg.r2 = BIT6(encoded_instruction, 3);
+  inst->parameters.reg.r0 = BYTE(encoded_instruction, 1);
+  inst->parameters.reg.r1 = BYTE(encoded_instruction, 2);
+  inst->parameters.reg.r2 = BYTE(encoded_instruction, 3);
 }
 
 void instruction_load_immediate_params(instruction *inst, word encoded_instruction)
 {
-  inst->parameters.imm.r0 = BIT6(encoded_instruction, 1);
-  inst->parameters.imm.imm = popWord(encoded_instruction, 12);
+  inst->parameters.imm.r0 = BYTE(encoded_instruction, 1);
+  inst->parameters.imm.imm = popWord(encoded_instruction, 16);
 }
 
 word instruction_encode_to_word(instruction *inst)
@@ -75,17 +75,17 @@ word instruction_encode_to_word(instruction *inst)
 word instruction_encode_reg(instruction *inst)
 {
   word encoded_instruction = inst->parameters.reg.r2;
-  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r1, 6);
-  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r0, 6);
-  encoded_instruction = pushWord(encoded_instruction, inst->opcode, 6);
+  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r1, 8);
+  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r0, 8);
+  encoded_instruction = pushWord(encoded_instruction, inst->opcode, 8);
   return encoded_instruction;
 }
 
 word instruction_encode_imm(instruction *inst)
 {
   word encoded_instruction = inst->parameters.imm.imm;
-  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r0, 6);
-  encoded_instruction = pushWord(encoded_instruction, inst->opcode, 6);
+  encoded_instruction = pushWord(encoded_instruction, inst->parameters.reg.r0, 8);
+  encoded_instruction = pushWord(encoded_instruction, inst->opcode, 8);
   return encoded_instruction;
 }
 
@@ -143,4 +143,5 @@ void instruction_log(instruction *inst)
     printf("R0: %d\n", params->r0);
     printf("IMM: %d\n", params->imm);
   }
+  printf("\n");
 }

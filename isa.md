@@ -39,6 +39,7 @@ r(n)!: Any register (index of n) that does not include:
 - tp
 - fp
 - fg
+- pfg
 
 ## Operations
 

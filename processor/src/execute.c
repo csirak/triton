@@ -7,6 +7,7 @@
 
 bool instruction_execute(cpu *cpu, instruction *inst)
 {
+
   switch (inst->type)
   {
   case MATH:
@@ -17,6 +18,7 @@ bool instruction_execute(cpu *cpu, instruction *inst)
 
   case SYSACC:
     return sysacc_execute(cpu, inst);
+  default:
   }
   return false;
 }

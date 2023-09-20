@@ -49,7 +49,9 @@ const char *SPECIAL_REGISTERS[] = {
     "gp",
     "tp",
     "fp",
-    "fg"};
+    "fg",
+    "pfg",
+    "t1"};
 
 const char *REGISTERS[] = {
     "r0",
@@ -120,7 +122,7 @@ bool is_alpha_num(char c)
 
 bool lexer_is_special_register(string *src)
 {
-  for (int i = 0; i < sizeof(SPECIAL_REGISTERS) / sizeof(SPECIAL_REGISTERS[0]); i++)
+  for (int i = 0; i < 9; i++)
   {
     if (string_char_equals(src, SPECIAL_REGISTERS[i]))
     {
@@ -263,7 +265,7 @@ int lexer_get_instruction(string *src)
 
 int lexer_get_special_register(string *src)
 {
-  return string_find_in_char_array(src, SPECIAL_REGISTERS, 7);
+  return string_find_in_char_array(src, SPECIAL_REGISTERS, 9);
 }
 
 token *lexer_get_token(string *src)

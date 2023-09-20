@@ -10,7 +10,9 @@ const char *types[] = {
     "INSTRUCTION",
     "REGISTER",
     "VALUE",
-    "LABEL"};
+    "LABEL_DEF",
+    "LABEL_CALL",
+};
 
 int main(int argc, char **argv)
 {
@@ -22,10 +24,14 @@ int main(int argc, char **argv)
 
   string *source = string_from_file(argv[1]);
   ptr_array *tokens = lexer_tokenize(source);
-
+  for (int i = 0; i < tokens->size; i++)
+  {
+    token *curtoken = ptr_array_get(tokens, i);
+    // printf("Type: %s ", types[curtoken->type]);
+    // printf("Value: %d\n", curtoken->value);
+  }
   parser_context *ctx = parser_parse(tokens);
   encoder_encode(ctx, argv[2], BIN);
-  ptr_array *labels = ctx->labels;
 
   return 0;
 }
