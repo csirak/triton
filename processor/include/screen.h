@@ -1,5 +1,5 @@
 #include "../lib/types.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 #ifndef SCREEN_H
 #define SCREEN_H

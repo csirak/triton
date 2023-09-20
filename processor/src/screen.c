@@ -1,4 +1,5 @@
 #include "../include/screen.h"
+#include "SFML/Graphics.h"
 
 Screen *screen_create(int width, int height)
 {

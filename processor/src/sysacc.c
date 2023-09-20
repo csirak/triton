@@ -1,5 +1,5 @@
 
-#include "stdio.h"
+#include <stdio.h>
 
 #include "../include/cpu.h"
 #include "../include/execute.h"

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "SFML/Graphics.h"
 
 #include "../lib/types.h"
 #include "../include/cpu.h"
@@ -13,7 +14,6 @@ cpu *cpu_create()
   cpu->registers = registers_create();
   cpu->memory = memory_create();
   cpu->screen = screen_create(SCREEN_WIDTH, SCREEN_HEIGHT);
-
   return cpu;
 }
 
@@ -22,6 +22,21 @@ void cpu_free(cpu *cpu)
   registers_free(cpu->registers);
   memory_free(cpu->memory);
   screen_free(cpu->screen);
+  free(cpu);
+}
+
+cpu *cpu_create_test()
+{
+  cpu *cpu = malloc_with_retry(sizeof(cpu));
+  cpu->registers = registers_create();
+  cpu->memory = memory_create();
+  return cpu;
+}
+
+void cpu_free_test(cpu *cpu)
+{
+  registers_free(cpu->registers);
+  memory_free(cpu->memory);
   free(cpu);
 }
 

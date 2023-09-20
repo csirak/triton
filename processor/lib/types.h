@@ -1,5 +1,3 @@
-#include "SFML/Graphics.h"
-
 #ifndef TYPES_H
 #define TYPES_H
 #define MEMORY_SIZE 0xFFFFFF
@@ -35,10 +33,10 @@ typedef struct memory
 
 typedef struct Screen
 {
-  sfRenderWindow *window;
-  sfImage *image;
-  sfTexture *texture;
-  sfSprite *sprite;
+  void *window;
+  void *image;
+  void *texture;
+  void *sprite;
 } Screen;
 
 typedef struct cpu
@@ -91,10 +89,8 @@ typedef enum Instructions
   SLT,
   SLTU,
   EQ,
-  MATH_END,
   JUMP,
   JEQ,
-  CFLOW_END,
   LOAD,
   STR,
   SETU,
@@ -102,7 +98,6 @@ typedef enum Instructions
   SETR,
   IRQ,
   SYSCALL,
-  SYSACC_END
 } Instructions;
 
 typedef struct register_parameters

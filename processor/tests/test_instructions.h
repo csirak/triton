@@ -52,13 +52,13 @@ typedef enum test_type
   MU_TEST(test_instruction_exec_##op_code##op_tag)                                          \
   {                                                                                         \
     printf("test_instruction_exec_%s_%s\n", #op_code, #op_tag);                             \
-    cpu *cpu = cpu_create();                                                                \
+    cpu *cpu = cpu_create_test();                                                                \
     cpu_write_reg(cpu, 22, r1_value);                                                       \
     cpu_write_reg(cpu, 23, r2_value);                                                       \
     instruction test_instruction = {MATH, op_code, REG, {{21, 22, 23}}};                    \
     instruction_execute(cpu, &test_instruction);                                            \
     mu_assert(cpu_read_reg(cpu, 21) value_com, sprintf("%s %s failed", #op_code, #op_tag)); \
-    cpu_free(cpu);                                                                          \
+    cpu_free_test(cpu);                                                                          \
   }
 
 void test_instruction_setup(void)
@@ -145,7 +145,7 @@ REG_OPCODE_EXECUTE_TEST(OVFLW, MOD, 0x69, 0x69, == 0)
 MU_TEST(test_instruction_exec_JUMP)
 {
   printf("test_instruction_exec_JUMP\n");
-  cpu *cpu = cpu_create();
+  cpu *cpu = cpu_create_test();
   cpu_write_reg(cpu, 1, 0x48);
   instruction test_instruction = {CFLOW, JUMP, REG, {{1, 2, 3}}};
   instruction_execute(cpu, &test_instruction);
@@ -155,7 +155,7 @@ MU_TEST(test_instruction_exec_JUMP)
 MU_TEST(test_instruction_exec_JEQ)
 {
   printf("test_instruction_exec_JEQ\n");
-  cpu *cpu = cpu_create();
+  cpu *cpu = cpu_create_test();
   cpu_write_reg(cpu, 20, 0x48);
   cpu_write_reg(cpu, 21, 0x48);
   cpu_write_reg(cpu, 22, 0x48);
@@ -168,7 +168,7 @@ MU_TEST(test_instruction_exec_JEQ)
 MU_TEST(test_instruction_exec_LOAD)
 {
   printf("test_instruction_exec_LOAD\n");
-  cpu *cpu = cpu_create();
+  cpu *cpu = cpu_create_test();
 
   word address = 0x48;
   word value = 0x69;
@@ -182,7 +182,7 @@ MU_TEST(test_instruction_exec_LOAD)
 MU_TEST(test_instruction_exec_STR)
 {
   printf("test_instruction_exec_STR\n");
-  cpu *cpu = cpu_create();
+  cpu *cpu = cpu_create_test();
   word address = 0x48;
   word value = 0x69;
   cpu_write_reg(cpu, 20, address);
@@ -195,7 +195,7 @@ MU_TEST(test_instruction_exec_STR)
 MU_TEST(test_instruction_exec_SETU)
 {
   printf("test_instruction_exec_SETU\n");
-  cpu *cpu = cpu_create();
+  cpu *cpu = cpu_create_test();
   word imm_value = 0x4000;
   instruction test_instruction = {SYSACC, SETU, REG, {imm : {20, imm_value}}};
   instruction_execute(cpu, &test_instruction);

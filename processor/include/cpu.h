@@ -14,6 +14,9 @@
 cpu *cpu_create();
 void cpu_free(cpu *cpu);
 
+cpu *cpu_create_test();
+void cpu_free_test(cpu *cpu);
+
 void cpu_write_reg(cpu *cpu, u8 reg, word data);
 void cpu_write_mem(cpu *cpu, word address, word data);
 

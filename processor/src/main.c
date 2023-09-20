@@ -1,6 +1,6 @@
 #include "../include/cpu.h"
 #include "../include/screen.h"
-#include "stdio.h"
+#include <stdio.h>
 
 int main()
 {

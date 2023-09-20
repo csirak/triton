@@ -14,7 +14,7 @@ TEST_OBJECTS = $(patsubst $(TESTDIR)/%.c,$(OBJDIR)/%.o,$(TESTS))
 LIB_SOURCES = $(wildcard $(LIBDIR)/*.c)
 LIB_OBJECTS = $(patsubst $(LIBDIR)/%.c,$(OBJDIR)/%.o,$(LIB_SOURCES))
 TARGET = $(BINDIR)/core
-TEST_TARGET = $(BINDIR)/test_suite
+TEST_TARGET = $(BINDIR)/core_test_suite
 
 # Tell make where to find .c files
 vpath %.c $(SRCDIR) $(TESTDIR) $(LIBDIR)

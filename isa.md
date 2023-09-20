@@ -42,8 +42,8 @@ r(n)!: Any register (index of n) that does not include:
 
 ### Math
 
-| Instruction | Inputs          | Description              | Return Flags |
-| :---------- | :-------------- | ------------------------ | ------------ |
+| Instruction | Inputs          | Description              |
+| :---------- | :-------------- | ------------------------ |
 | add         | r(0)!, r\*, r\* | r(0)! = r(1)\* + r(2)\*  |
 | sub         | r(0)!, r\*, r\* | r(0)! = r(1)\* - r(2)\*  |
 | mul         | r(0)!, r\*, r\* | r(0)! = r(1)\* \* r(2)\* |
@@ -55,7 +55,7 @@ r(n)!: Any register (index of n) that does not include:
 | and         | r(0)!, r\*, r\* | r(0)! = r(1)\* & r(2)\*  |
 | or          | r(0)!, r\*, r\* | r(0)! = r(1)\* \| r(2)\* |
 | xor         | r(0)!, r\*, r\* | r(0)! = r(1)\* ~ r(2)\*  |
-| not         | r(0)!, r\*, r\* | r(0)! = r(1)\* ! r(2)\*  |
+| not         | r(0)!, r\*, r\* | r(0)! = ^ r(1)\*         |
 | slt         | r(0)!, r\*, r\* | r(0)! = r(1)\* < r(2)\*  |
 | sltu        | r(0)!, r\*, r\* | r(0)! = r(1)\* < r(2)\*  |
 | eq          | r(0)!, r\*, r\* | r(0)! = r(1)\* == r(2)\* |

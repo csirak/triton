@@ -26,15 +26,15 @@ instruction *instruction_decode(word encoded_instruction)
 {
   instruction *inst = malloc_with_retry(sizeof(instruction));
   inst->opcode = BIT6(encoded_instruction, 0);
-  if (inst->opcode <= MATH_END)
+  if (inst->opcode <= EQ)
   {
     instruction_decode_math(inst, encoded_instruction);
   }
-  else if (inst->opcode <= CFLOW_END)
+  else if (inst->opcode <= JEQ)
   {
     instruction_decode_cflow(inst, encoded_instruction);
   }
-  else if (inst->opcode <= SYSACC_END)
+  else if (inst->opcode <= SYSCALL)
   {
     instruction_decode_sysacc(inst, encoded_instruction);
   }
@@ -133,18 +133,15 @@ const char *instruction_keywords[] = {
     "SLT",
     "SLTU",
     "EQ",
-    "MATH_END",
     "JUMP",
     "JEQ",
-    "CFLOW_END",
     "LOAD",
     "STR",
     "SETU",
     "SETL",
     "SETR",
     "IRQ",
-    "SYSCALL",
-    "SYSACC_END"};
+    "SYSCALL"};
 
 const char *op_type_keywords[] = {
     "MATH",

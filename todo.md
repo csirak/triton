@@ -1,10 +1,12 @@
-| Bugs                             | Solutions   |
-| :------------------------------- | :---------- |
-| Cpu memory allocation            | PATCHED     |
-| Instruction immediate encode bug | PATCHED     |
-| Division by zero flag set        | PATCHED     |
-| No Interrupts                    | NOT STARTED |
-| No syscalls                      | NOT STARTED |
+| Bugs                             | Solutions    |
+| :------------------------------- | :----------- |
+| Cpu memory allocation            | PATCHED      |
+| Instruction immediate encode bug | PATCHED      |
+| Division by zero flag set        | PATCHED      |
+| No Interrupts                    | SEMI-PATCHED |
+| No syscalls                      | NOT STARTED  |
+
+## **Processor**
 
 | Features                      | Completeness Level |
 | :---------------------------- | :----------------- |
@@ -17,6 +19,26 @@
 | CFLOW Instrucions             | DONE               |
 | SYSACC Instrucions            | DONE               |
 | Memory Layout                 | DONE               |
-| CPU Step                      | NOT STARTED        |
-| CPU Read and execute          | NOT STARTED        |
-| Reading and Writing Programs  | NOT STARTED        |
+| CPU Step                      | DONE               |
+| CPU Read and execute          | DONE               |
+
+## **Assembler**
+
+| Features           | Completeness Level |
+| :----------------- | :----------------- |
+| Base Opcode Lexing | DONE               |
+| Label Lexing       | DONE               |
+| Comment Lexing     | DONE               |
+| AST                | IN PROGESS         |
+| Encoding           | NOT STARTED        |
+| Dissassembly       | NOT STARTED        |
+
+## **C Compiler**
+
+| Features | Completeness Level |
+| :------- | :----------------- |
+
+## **Simple OS**
+
+| Features | Completeness Level |
+| :------- | :----------------- |
