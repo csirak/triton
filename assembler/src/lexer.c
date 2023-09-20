@@ -1,5 +1,5 @@
 #include "../include/lexer.h"
-#include "../lib/arrays.h"
+#include "lib/arrays.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -95,7 +95,8 @@ const char *TOKEN_TYPES[] = {
     "INSTRUCTION",
     "REGISTER",
     "VALUE",
-    "LABEL"};
+    "LABEL_DEF",
+    "LABEL_CALL"};
 
 bool is_digit(char c)
 {
@@ -154,7 +155,12 @@ bool lexer_is_symbol(char c)
   return false;
 }
 
-bool lexer_is_label(string *src)
+bool lexer_is_label_def(string *src)
+{
+  return lexer_is_label_call(src) && string_get_char(src, src->length - 1) == ':';
+}
+
+bool lexer_is_label_call(string *src)
 {
   if (!is_alpha(string_get_char(src, 0)))
   {
@@ -167,7 +173,7 @@ bool lexer_is_label(string *src)
       return false;
     }
   }
-  return string_get_char(src, src->length - 1) == ':';
+  return true;
 }
 
 bool lexer_is_register(string *src)
@@ -290,9 +296,16 @@ token *lexer_get_token(string *src)
     token_obl->type = VALUE;
     token_obl->value = lexer_get_hex_value(src);
   }
-  else if (lexer_is_label(src))
+  else if (lexer_is_label_def(src))
   {
-    token_obl->type = LABEL;
+    token_obl->type = LABEL_DEF;
+    --src->length;
+    token_obl->value = string_hash(src);
+    ++src->length;
+  }
+  else if (lexer_is_label_call(src))
+  {
+    token_obl->type = LABEL_CALL;
     token_obl->value = string_hash(src);
   }
   else

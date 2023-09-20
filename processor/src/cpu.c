@@ -1,12 +1,14 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "SFML/Graphics.h"
 
-#include "../lib/types.h"
-#include "../include/cpu.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "../include/instruction.h"
+#include "lib/instruction.h"
+
+#include "../include/cpu.h"
+#include "../include/types.h"
 #include "../include/screen.h"
+#include "../include/execute.h"
 
 cpu *cpu_create()
 {

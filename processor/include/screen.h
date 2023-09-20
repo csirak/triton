@@ -1,4 +1,4 @@
-#include "../lib/types.h"
+#include "../include/types.h"
 #include <stdlib.h>
 
 #ifndef SCREEN_H

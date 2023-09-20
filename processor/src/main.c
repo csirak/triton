@@ -14,23 +14,5 @@ int main()
   printf("test3\n");
   cpu_vram_to_screen(cpu);
   cpu_run(cpu);
-  // int changed = 1;
-  // sfEvent event;
-  // while (running)
-  // {
-  //   while (sfRenderWindow_pollEvent(cpu->screen->window, &event))
-  //   {
-  //     if (event.type == sfEvtClosed)
-  //     {
-  //       running = 0;
-  //     }
-  //     if (changed)
-  //     {
-  //       screen_display(cpu->screen);
-  //       changed = 0;
-  //     }
-  //   }
-  // }
-
   cpu_free(cpu);
 }

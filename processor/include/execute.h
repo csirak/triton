@@ -1,4 +1,4 @@
-#include "../lib/types.h"
+#include "../include/types.h"
 
 #ifndef CLFOW_H
 #define CLFOW_H
@@ -16,6 +16,7 @@
   }
 
 // External functions
+bool instruction_execute(cpu *cpu, instruction *inst);
 bool math_execute(cpu *cpu, instruction *instruction);
 bool cflow_execute(cpu *cpu, instruction *instruction);
 bool sysacc_execute(cpu *cpu, instruction *instruction);

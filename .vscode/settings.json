@@ -65,7 +65,8 @@
     "__mutex_base": "c",
     "concepts": "c",
     "iosfwd": "c",
-    "sstream": "c"
+    "sstream": "c",
+    "initializer_list": "c"
   },
   "lldb.displayFormat": "auto",
   "lldb.showDisassembly": "auto",

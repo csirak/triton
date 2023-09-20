@@ -1,7 +1,7 @@
 #include "minunit.h"
 
-#include "../lib/bits.h"
-#include "../lib/types.h"
+#include "lib/bits.h"
+#include "../include/types.h"
 
 #ifndef TEST_BITS_H
 #define TEST_BITS_H

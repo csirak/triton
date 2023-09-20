@@ -1,5 +1,5 @@
-#include "../lib/types.h"
-#include "../lib/bits.h"
+#include "../include/types.h"
+#include "lib/bits.h"
 
 #ifndef MEMORY_H
 #define MEMORY_H

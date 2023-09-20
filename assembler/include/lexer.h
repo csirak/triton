@@ -1,5 +1,5 @@
-#include "../lib/types.h"
-#include "../lib/strings.h"
+#include "lib/types.h"
+#include "lib/strings.h"
 
 #ifndef LEXER_H
 #define LEXER_H
@@ -8,7 +8,8 @@ bool lexer_is_symbol(char c);
 bool lexer_is_whitespace(char c);
 
 bool lexer_is_value(string *src);
-bool lexer_is_label(string *src);
+bool lexer_is_label_def(string *src);
+bool lexer_is_label_call(string *src);
 bool lexer_is_register(string *src);
 bool lexer_is_hex_value(string *src);
 bool lexer_is_dec_value(string *src);

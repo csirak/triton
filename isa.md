@@ -62,10 +62,10 @@ r(n)!: Any register (index of n) that does not include:
 
 ### Control Flow
 
-| Instruction | Inputs                 | Description                          |
-| :---------- | :--------------------- | ------------------------------------ |
-| jump        | r(0)\*                 | pc = r(0)\*                          |
-| jeq         | r(0)\*, r(1)\*, r(2)\* | if r(1)\* == r(2)\* then jump r(0)\* |
+| Instruction | Inputs                | Description                         |
+| :---------- | :-------------------- | ----------------------------------- |
+| jump        | label                 | pc = label                          |
+| jeq         | label, r(1)\*, r(2)\* | if r(1)\* == r(2)\* then jump label |
 
 [comment]: # "jeqz is a macro"
 
@@ -75,9 +75,9 @@ r(n)!: Any register (index of n) that does not include:
 | :---------- | :------------- | ------------------------------------ |
 | load        | r(0)!, r(1)\*  | r(0)! = memory[r(1)\*]               |
 | str         | r(0)\*, r(1)\* | memory[r(0)\*] = r(1)\*              |
+| setr        | r(0)!, r(1)\*  | r(0)! = r(1)\*                       |
 | setu        | r(0)!, imm     | r(0)! = imm << 16                    |
 | setl        | r(0)!, imm     | r(0)! = imm                          |
-| setr        | r(0)!, r(1)\*  | r(0)! = r(1)\*                       |
 | irq         | r(0)\*         | interrupt request with code (r(0)\*) |
 | syscall     | r(0)\*         | syscall with code (r(0)\*)           |
 
@@ -85,9 +85,9 @@ r(n)!: Any register (index of n) that does not include:
 
 ### Control Flow
 
-| Instruction | Inputs         | Description                       |
-| :---------- | :------------- | --------------------------------- |
-| jeqz        | r(0)\*, r(1)\* | if r(1)\* == 0\* then jump r(0)\* |
+| Instruction | Inputs        | Description                      |
+| :---------- | :------------ | -------------------------------- |
+| jeqz        | label, r(1)\* | if r(1)\* == 0\* then jump label |
 
 ### Stack Access
 
