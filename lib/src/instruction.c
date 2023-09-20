@@ -5,18 +5,32 @@
 instruction *instruction_decode(word encoded_instruction)
 {
   instruction *inst = malloc_with_retry(sizeof(instruction));
-  inst->opcode = BIT6(encoded_instruction, 0);
+  inst->opcode = instruction_decode_opcode(encoded_instruction);
   if (inst->opcode <= EQ)
   {
-    instruction_decode_math(inst, encoded_instruction);
+    inst->type = MATH;
+    inst->param_type = REG;
+    instruction_load_register_params(inst, encoded_instruction);
   }
   else if (inst->opcode <= JEQ)
   {
-    instruction_decode_cflow(inst, encoded_instruction);
+    inst->type = CFLOW;
+    inst->param_type = REG;
+    instruction_load_register_params(inst, encoded_instruction);
   }
   else if (inst->opcode <= SYSCALL)
   {
-    instruction_decode_sysacc(inst, encoded_instruction);
+    inst->type = SYSACC;
+    if (inst->opcode == SETL || inst->opcode == SETU)
+    {
+      inst->param_type = IMM;
+      instruction_load_immediate_params(inst, encoded_instruction);
+    }
+    else
+    {
+      inst->param_type = REG;
+      instruction_load_register_params(inst, encoded_instruction);
+    }
   }
   else
   {
@@ -25,31 +39,9 @@ instruction *instruction_decode(word encoded_instruction)
   return inst;
 }
 
-void instruction_decode_math(instruction *inst, word encoded_instruction)
+Instructions instruction_decode_opcode(word encoded_instruction)
 {
-  inst->type = MATH;
-  inst->param_type = REG;
-  instruction_load_register_params(inst, encoded_instruction);
-}
-
-void instruction_decode_cflow(instruction *inst, word encoded_instruction)
-{
-  inst->type = CFLOW;
-  inst->param_type = REG;
-  instruction_load_register_params(inst, encoded_instruction);
-}
-
-void instruction_decode_sysacc(instruction *inst, word encoded_instruction)
-{
-  inst->type = SYSACC;
-  if (inst->opcode == SETL || inst->opcode == SETU)
-  {
-    inst->param_type = IMM;
-    instruction_load_immediate_params(inst, encoded_instruction);
-    return;
-  }
-  inst->param_type = REG;
-  instruction_load_register_params(inst, encoded_instruction);
+  return BIT6(encoded_instruction, 0);
 }
 
 void instruction_load_register_params(instruction *inst, word encoded_instruction)

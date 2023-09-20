@@ -1,10 +1,9 @@
 _start: 
-  add r31 r30 r29 
-  mul r31 r30 r29
-  not r17 z
-  jeq _start r30 r29 
-  jump _start
-  jump _start
-  jump _start
-  setu r2 0x7
-  irq r1
+  jump main
+
+main: 
+  setr r22 z
+  setr r21 z
+  setr r23 z
+  setl r23 0x1111
+  add r22 r21 r23

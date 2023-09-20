@@ -69,7 +69,7 @@ word cpu_read_mem(cpu *cpu, word address)
 void cpu_start(cpu *cpu)
 {
   cpu_write_reg(cpu, SP_REG, 0x00000FFF);
-  cpu_write_reg(cpu, PC_REG, 0x00001000);
+  cpu_write_reg(cpu, PC_REG, 0);
 }
 
 void cpu_vram_to_screen(cpu *cpu)
@@ -83,6 +83,7 @@ bool cpu_step(cpu *cpu)
   word encoded_instruction = cpu_read_mem(cpu, pc_value);
   cpu_write_reg(cpu, PC_REG, pc_value + 1);
   instruction *inst = instruction_decode(encoded_instruction);
+  instruction_log(inst);
   instruction_execute(cpu, inst);
   free(inst);
   return false;

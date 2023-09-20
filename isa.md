@@ -12,17 +12,19 @@
 
 ## Registers
 
-| Index | ABI Name | Name                    |
-| ----: | -------: | :---------------------- |
-|     0 |        z | Zero Register           |
-|     1 |       ra | Return Address          |
-|     2 |       sp | Stack Pointer           |
-|     3 |       gp | Global Pointer          |
-|     4 |       tp | Thread Pointer          |
-|     5 |       pc | Program counter         |
-|     6 |       fp | Frame pointer           |
-|     7 |       fg | Operation flag register |
-|  8-31 |  unnamed | Unnamed                 |
+| Index | ABI Name | Name                          |
+| ----: | -------: | :---------------------------- |
+|     0 |        z | Zero Register                 |
+|     1 |       ra | Return Address                |
+|     2 |       sp | Stack Pointer                 |
+|     3 |       gp | Global Pointer                |
+|     4 |       tp | Thread Pointer                |
+|     5 |       pc | Program counter               |
+|     6 |       fp | Stack Frame pointer           |
+|     7 |       fg | Operation flag register       |
+|     8 |      pfg | Program counter Frame pointer |
+|     9 |    t1-tn | Temp registers                |
+| 10-31 |  unnamed | Unnamed                       |
 
 ### Conventions:
 

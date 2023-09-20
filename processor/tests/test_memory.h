@@ -1,4 +1,5 @@
-#include "minunit.h"
+#include "lib/minunit.h"
+
 #include <stdlib.h>
 
 #include "../include/memory.h"

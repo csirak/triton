@@ -58,7 +58,7 @@
 			"patterns": [
 				{
 					"name": "variable.language",
-					"match": "\\b(z|ra|sp|gp|tp|pc|fp|fg)\\b"
+					"match": "\\b(z|ra|sp|gp|tp|pc|fp|fg|pfg)\\b"
 				},
 				{
 					"name": "variable.other.readwrite",

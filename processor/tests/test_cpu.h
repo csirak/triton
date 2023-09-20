@@ -1,4 +1,4 @@
-#include "minunit.h"
+#include "lib/minunit.h"
 
 #include "../include/cpu.h"
 

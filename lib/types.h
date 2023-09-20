@@ -121,4 +121,17 @@ typedef struct instruction
 
 } instruction;
 
+typedef enum named_registers
+{
+  Z_REG,
+  RA_REG,
+  SP_REG,
+  GP_REG,
+  TP_REG,
+  PC_REG,
+  FP_REG,
+  FG_REG,
+  PFG_REG,
+  T1_REG
+} named_registers;
 #endif // TYPES_H

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "lib/bits.h"
 #include "lib/instruction.h"
 
 #include "../include/execute.h"

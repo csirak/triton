@@ -53,7 +53,7 @@ test: $(TEST_TARGET)
 # Target to compile and run the main program
 run: $(TARGET)
 	echo "Running $(TARGET)...\n\nOutput:\n"
-	@./$(TARGET) tests/test.tasm
+	@./$(TARGET) tests/test.tasm test.bin
 
 # Clean up
 clean:

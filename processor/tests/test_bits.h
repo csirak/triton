@@ -1,4 +1,4 @@
-#include "minunit.h"
+#include "lib/minunit.h"
 
 #include "lib/bits.h"
 #include "../include/types.h"

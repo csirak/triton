@@ -1,11 +1,6 @@
 #include "../include/parser.h"
-#include "../include/types.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-int parser_get_label_index(parser_context *ctx, int value)
-{
-}
 
 token *parser_get_next(parser_context *ctx)
 {
@@ -13,7 +8,7 @@ token *parser_get_next(parser_context *ctx)
   return ptr_array_get(ctx->tokens, ctx->current_index);
 }
 
-ptr_array *parser_parse(ptr_array *tokens)
+parser_context *parser_parse(ptr_array *tokens)
 {
 
   ptr_array *labels = ptr_array_new();
@@ -48,7 +43,7 @@ ptr_array *parser_parse(ptr_array *tokens)
     }
   }
 
-  return labels;
+  return context;
 }
 
 void parser_parse_instruction(parser_context *ctx)
@@ -84,7 +79,6 @@ void parser_parse_label_def(parser_context *ctx)
   ++ctx->current_label_index;
   ptr_array_push(ctx->labels, ctx->current_label);
   ptr_array_push(ctx->labels, current_token->value);
-
   ++ctx->current_index;
 }
 
@@ -133,10 +127,9 @@ void parser_parse_cflow(parser_context *ctx)
   token *jump_label = parser_get_next(ctx);
   token *comparision_left;
   token *comparision_right;
-
-  if (!jump_label->type != LABEL_CALL)
+  inst.parameters.reg.r0 = T1_REG;
+  if (jump_label->type != LABEL_CALL)
   {
-    // throw error
   }
 
   if (inst.opcode == JEQ)
@@ -153,8 +146,11 @@ void parser_parse_cflow(parser_context *ctx)
   }
 
   word encoded_instruction = instruction_encode_to_word(&inst);
-  ptr_array_push(ctx->current_label, (void *)encoded_instruction);
-  ptr_array_push(ctx->current_label, (void *)jump_label->value);
+  ptr_array_push(ctx->current_label, encoded_instruction);
+  ptr_array_push(ctx->current_label, jump_label->value);
+  // left empty will be replaced by instruction
+  ptr_array_push(ctx->current_label, 0);
+
   ++ctx->current_index;
 }
 

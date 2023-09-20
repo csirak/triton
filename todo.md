@@ -5,6 +5,7 @@
 | Division by zero flag set        | PATCHED      |
 | No Interrupts                    | SEMI-PATCHED |
 | No syscalls                      | NOT STARTED  |
+| Program counter abstractions     | NOT STARTED  |
 
 ## **Processor**
 

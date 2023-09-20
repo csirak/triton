@@ -36,16 +36,6 @@ typedef struct cpu
   Screen *screen;
 } cpu;
 
-typedef enum named_registers
-{
-  Z_REG,
-  RA_REG,
-  SP_REG,
-  GP_REG,
-  TP_REG,
-  PC_REG,
-  FP_REG,
-  FG_REG
-} named_registers;
+
 
 #endif // PROC_TYPES_H

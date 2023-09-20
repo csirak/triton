@@ -1,6 +1,8 @@
-#include "minunit.h"
+#include "lib/minunit.h"
+#include "lib/instruction.h"
 
-#include "../include/instruction.h"
+#include "../include/types.h"
+#include "../include/execute.h"
 
 #ifndef TEST_INSTRUCTION_H
 #define TEST_INSTRUCTION_H
@@ -52,13 +54,13 @@ typedef enum test_type
   MU_TEST(test_instruction_exec_##op_code##op_tag)                                          \
   {                                                                                         \
     printf("test_instruction_exec_%s_%s\n", #op_code, #op_tag);                             \
-    cpu *cpu = cpu_create_test();                                                                \
+    cpu *cpu = cpu_create_test();                                                           \
     cpu_write_reg(cpu, 22, r1_value);                                                       \
     cpu_write_reg(cpu, 23, r2_value);                                                       \
     instruction test_instruction = {MATH, op_code, REG, {{21, 22, 23}}};                    \
     instruction_execute(cpu, &test_instruction);                                            \
     mu_assert(cpu_read_reg(cpu, 21) value_com, sprintf("%s %s failed", #op_code, #op_tag)); \
-    cpu_free_test(cpu);                                                                          \
+    cpu_free_test(cpu);                                                                     \
   }
 
 void test_instruction_setup(void)
@@ -147,6 +149,8 @@ MU_TEST(test_instruction_exec_JUMP)
   printf("test_instruction_exec_JUMP\n");
   cpu *cpu = cpu_create_test();
   cpu_write_reg(cpu, 1, 0x48);
+  cpu_write_reg(cpu, PFG_REG, 0);
+
   instruction test_instruction = {CFLOW, JUMP, REG, {{1, 2, 3}}};
   instruction_execute(cpu, &test_instruction);
   mu_assert(cpu_read_reg(cpu, PC_REG) == 0x48, "PC_REG should be 0x48");
@@ -157,6 +161,7 @@ MU_TEST(test_instruction_exec_JEQ)
   printf("test_instruction_exec_JEQ\n");
   cpu *cpu = cpu_create_test();
   cpu_write_reg(cpu, 20, 0x48);
+  cpu_write_reg(cpu, PFG_REG, 0);
   cpu_write_reg(cpu, 21, 0x48);
   cpu_write_reg(cpu, 22, 0x48);
   instruction test_instruction = {CFLOW, JEQ, REG, {{20, 21, 22}}};

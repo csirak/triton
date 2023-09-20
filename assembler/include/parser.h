@@ -6,7 +6,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-ptr_array *parser_parse(ptr_array *tokens);
+parser_context *parser_parse(ptr_array *tokens);
+
 token *parser_get_next(parser_context *ctx);
 
 void parser_parse_instruction(parser_context *ctx);
