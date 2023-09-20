@@ -1,0 +1,44 @@
+{
+  "name": "Triton Assembly Highlighter",
+  "type": "dark",
+  "colors": {},
+  "tokenColors": [
+    {
+      "scope": "keyword.instruction.tasm",
+      "settings": {
+        "foreground": "#cfc94f"
+      }
+    },
+    {
+      "scope": "variable.register.special.tasm",
+      "settings": {
+        "foreground": "#6271cd"
+      }
+    },
+    {
+      "scope": "variable.register.general.tasm",
+      "settings": {
+        "foreground": "#32CD32"
+      }
+    },
+    {
+      "scope": "constant.numeric.tasm",
+      "settings": {
+        "foreground": "#FFD700"
+      }
+    },
+    {
+      "scope": "comment.line",
+      "settings": {
+        "foreground": "#808080",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "entity.name.label.tasm",
+      "settings": {
+        "foreground": "#FF69B4" // This is a pink color for labels. Adjust as needed.
+      }
+    }
+  ]
+}

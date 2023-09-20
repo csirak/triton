@@ -1,0 +1,86 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Triton Assembly",
+	"scopeName": "main.tasm",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#instructions"
+		},
+		{
+			"include": "#registers"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#labels"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line",
+					"match": "#.*",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.tasm"
+						}
+					}
+				},
+				{
+					"name": "comment.block",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.begin.tasm"
+						},
+						"1": {
+							"name": "punctuation.definition.comment.end.tasm"
+						}
+					}
+				}
+			]
+		},
+		"instructions": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(add|sub|mul|div|mod|sll|srl|sra|and|or|xor|not|slt|sltu|eq|jump|jeq|load|str|setu|setl|setr|irq|syscall|jeqz|push|pop)\\b"
+				}
+			]
+		},
+		"registers": {
+			"patterns": [
+				{
+					"name": "variable.language",
+					"match": "\\b(z|ra|sp|gp|tp|pc|fp|fg)\\b"
+				},
+				{
+					"name": "variable.other.readwrite",
+					"match": "r\\d+"
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.tasm",
+					"match": "\\b(0x[a-fA-F0-9]+|\\d+)\\b"
+				}
+			]
+		},
+		"labels": {
+			"patterns": [
+				{
+					"name": "entity.name.type",
+					"match": "^\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\:"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,18 @@
+
+
+_start: 
+  add z -100 
+  setu z r0
+
+_start1: 
+  add z -100 
+  setu z r0
+
+_start2: 
+  add z -100 
+  setu z r1 # this is a comment
+
+_start3: 
+  add z 0x1243 
+  setu fp r11
+  setu fg r11

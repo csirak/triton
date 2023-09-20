@@ -1,0 +1,55 @@
+{
+  "name": "tasm",
+  "displayName": "tasm",
+  "description": "Triton Assembly",
+  "version": "0.0.1",
+  "main": "./extension.js",
+  "scripts": {
+    "build": "tsc extension.ts && vsce package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csirak1528/triton.git"
+  },
+  "engines": {
+    "vscode": "^1.71.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:tasm"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tasm",
+        "aliases": [
+          "Triton Assembly",
+          "tasm"
+        ],
+        "extensions": [
+          ".tasm"
+        ],
+        "configuration": "./language-configuration.json",
+        "path": "./syntaxes/tasm.tmLanguage.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tasm",
+        "scopeName": "main.tasm",
+        "path": "./syntaxes/tasm.tmLanguage.json"
+      }
+    ],
+    "documentFormattingEditProvider": {
+      "language": "tasm"
+    }
+  },
+  "devDependencies": {
+    "vscode": "^1.1.37"
+  },
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
+}
